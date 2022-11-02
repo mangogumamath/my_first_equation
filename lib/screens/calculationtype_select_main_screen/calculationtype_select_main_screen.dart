@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:get/get.dart';
 import 'package:my_first_equation/screens/practice_screen/practice_screen.dart';
 

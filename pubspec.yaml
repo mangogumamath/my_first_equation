@@ -17,8 +17,6 @@ dependencies:
 
   get: ^4.6.5
 
-  math_keyboard: ^0.1.7
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
