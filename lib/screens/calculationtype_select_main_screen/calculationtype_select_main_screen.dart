@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_first_equation/controller/practice_screen_controller.dart';
 import 'package:my_first_equation/screens/practice_screen/practice_screen.dart';
 
 class CalculationTypeSelectMainScreen extends StatelessWidget {
@@ -25,7 +26,9 @@ class CalculationTypeSelectMainScreen extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Get.to(() => PracticeScreen());
+                  Get.to(PracticeScreen(), binding: BindingsBuilder(() {
+                    Get.put(PracticeScreenController());
+                  }));
                 },
                 child: Text('Play'),
               ),

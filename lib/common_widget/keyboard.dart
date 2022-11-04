@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_first_equation/controller/practice_screen_controller.dart';
 
 class KeyBoard extends StatefulWidget {
   const KeyBoard({Key? key}) : super(key: key);
@@ -22,12 +24,35 @@ class _KeyBoardState extends State<KeyBoard> {
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text('답을 입력해 주세요'),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(
                       color: Colors.black12,
                     ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Obx(() => Text(
+                              PracticeScreenController.to.keyBoardValue.value ==
+                                      ''
+                                  ? '답을 입력해주세요'
+                                  : PracticeScreenController
+                                      .to.keyBoardValue.value,
+                              style: TextStyle(fontSize: size.height * 0.04),
+                            )),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          PracticeScreenController.to.keyBoardValue.value = '';
+                        },
+                        icon: Icon(
+                          Icons.cancel,
+                          size: size.height * 0.05,
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -55,16 +80,28 @@ class _KeyBoardState extends State<KeyBoard> {
               //첫줄
               children: [
                 KeyBoardButton(
-                  child: Text('1'),
+                  addString: '1',
                   mediaQuerySize: size,
+                  child: Text(
+                    '1',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Text('2'),
+                  addString: '2',
                   mediaQuerySize: size,
+                  child: Text(
+                    '2',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Text('3'),
+                  addString: '3',
                   mediaQuerySize: size,
+                  child: Text(
+                    '3',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
               ],
             ),
@@ -72,16 +109,28 @@ class _KeyBoardState extends State<KeyBoard> {
               //둘째줄
               children: [
                 KeyBoardButton(
-                  child: Text('4'),
+                  addString: '4',
                   mediaQuerySize: size,
+                  child: Text(
+                    '4',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Text('5'),
+                  addString: '5',
                   mediaQuerySize: size,
+                  child: Text(
+                    '5',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Text('6'),
+                  addString: '6',
                   mediaQuerySize: size,
+                  child: Text(
+                    '6',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
               ],
             ),
@@ -89,16 +138,28 @@ class _KeyBoardState extends State<KeyBoard> {
               //셋째줄
               children: [
                 KeyBoardButton(
-                  child: Text('7'),
+                  addString: '7',
                   mediaQuerySize: size,
+                  child: Text(
+                    '7',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Text('8'),
+                  addString: '8',
                   mediaQuerySize: size,
+                  child: Text(
+                    '8',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Text('9'),
+                  addString: '9',
                   mediaQuerySize: size,
+                  child: Text(
+                    '9',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
               ],
             ),
@@ -106,16 +167,36 @@ class _KeyBoardState extends State<KeyBoard> {
               //넷째줄
               children: [
                 KeyBoardButton(
-                  child: Text('-'),
+                  addString: '-',
                   mediaQuerySize: size,
+                  child: Text(
+                    '-',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Text('0'),
+                  addString: '0',
                   mediaQuerySize: size,
+                  child: Text(
+                    '0',
+                    style: TextStyle(fontSize: size.height * 0.05),
+                  ),
                 ),
                 KeyBoardButton(
-                  child: Icon(Icons.arrow_back),
+                  function: () {
+                    if (PracticeScreenController
+                        .to.keyBoardValue.value.isNotEmpty) {
+                      PracticeScreenController.to.keyBoardValue.value =
+                          PracticeScreenController.to.keyBoardValue.value
+                              .substring(
+                                  0,
+                                  PracticeScreenController
+                                          .to.keyBoardValue.value.length -
+                                      1);
+                    }
+                  },
                   mediaQuerySize: size,
+                  child: Icon(Icons.arrow_back, size: size.height * 0.05),
                 ),
               ],
             ),
@@ -128,19 +209,29 @@ class _KeyBoardState extends State<KeyBoard> {
 
 class KeyBoardButton extends StatelessWidget {
   KeyBoardButton({
-    Key? key,
+    super.key,
     required this.mediaQuerySize,
     required this.child,
-  }) : super(key: key);
+    String? addString,
+    Function? function,
+  }) {
+    this.addString = addString ?? '';
+    this.function = function ?? () {};
+  }
 
   Size mediaQuerySize;
   Widget child;
+  String addString = '';
+  Function function = () {};
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          PracticeScreenController.to.keyBoardValue.value += addString;
+          function();
+        },
         child: Container(
           height: mediaQuerySize.height * 0.09 < 50.0
               ? 50.0
