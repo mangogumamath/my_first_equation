@@ -62,7 +62,9 @@ class _KeyBoardState extends State<KeyBoard> {
               CircleAvatar(
                 backgroundColor: Colors.blue,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    PracticeScreenController.to.answerCheck();
+                  },
                   icon: Icon(Icons.keyboard_arrow_right),
                   color: Colors.white,
                 ),
@@ -233,9 +235,9 @@ class KeyBoardButton extends StatelessWidget {
           function();
         },
         child: Container(
-          height: mediaQuerySize.height * 0.09 < 50.0
-              ? 50.0
-              : mediaQuerySize.height * 0.09,
+          height: mediaQuerySize.height * 0.07 < 40.0
+              ? 40.0
+              : mediaQuerySize.height * 0.07,
           child: Center(child: child),
         ),
       ),

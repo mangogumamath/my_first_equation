@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:get/get.dart';
+import 'package:math_keyboard/math_keyboard.dart';
 import 'package:my_first_equation/common_widget/keyboard.dart';
+import 'package:my_first_equation/controller/practice_screen_controller.dart';
 
 class PracticeScreen extends StatelessWidget {
   PracticeScreen({Key? key}) : super(key: key);
@@ -32,7 +35,11 @@ class PracticeScreen extends StatelessWidget {
                     Column(
                       children: [
                         Text('문제수', style: TextStyle(fontSize: 30.0)),
-                        Text('3/10', style: TextStyle(fontSize: 30.0)),
+                        Obx(
+                          () => Text(
+                              '${PracticeScreenController.to.problemCount.value}/${PracticeScreenController.to.problemCount_max.value}',
+                              style: TextStyle(fontSize: 30.0)),
+                        )
                       ],
                     ),
                     Column(
@@ -44,7 +51,17 @@ class PracticeScreen extends StatelessWidget {
                   ],
                 ),
                 Card(
-                  child: Text('문제', style: TextStyle(fontSize: 30.0)),
+                  child: SizedBox(
+                    width: 200.0,
+                    height: 100.0,
+                    child: Center(
+                        child: GetBuilder<PracticeScreenController>(
+                            builder: (_) => Math.tex(
+                                  PracticeScreenController
+                                      .to.questionText.value,
+                                  textStyle: TextStyle(fontSize: 30.0),
+                                ))),
+                  ),
                 ),
                 ElevatedButton(
                     onPressed: () {
@@ -52,6 +69,7 @@ class PracticeScreen extends StatelessWidget {
                         Wrap(
                           children: [KeyBoard()],
                         ),
+                        barrierColor: Colors.black12.withOpacity(0),
                         isScrollControlled: true,
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -62,6 +80,31 @@ class PracticeScreen extends StatelessWidget {
                       );
                     },
                     child: Text('버튼', style: TextStyle(fontSize: 30.0))),
+                MathField(
+                  variables: const ['a', 'b', 'x'],
+                  onChanged: (value) {
+                    try {
+                      //필요한 값
+                      // 1.문제TeX용 String '{7}'+r'\times'+'{a}'
+                      // 2.1을 변환한 Expression
+                      // 3.키보드로 입력받은 TeX용 String
+                      // 4.3을 변환한 Expression
+
+                      //value는 Tex용 String
+                      // PracticeScreenController.to.questionText.value = value;
+// PracticeScreenController.to.keyBoardValueExpression = value;
+                      //'${TeXParser(value).parse()}'는 mathExpression용 String
+                      PracticeScreenController.to.keyBoardValue.value =
+                          '${TeXParser(value).parse()}';
+                      print(value);
+                      print(TeXParser(value).parse());
+                      print(convertMathExpressionToTeXNode(
+                              TeXParser(value).parse())
+                          .buildTeXString());
+                      PracticeScreenController.to.update();
+                    } catch (_) {}
+                  },
+                ),
               ],
             ),
           ],
